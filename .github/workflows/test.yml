@@ -1,4 +1,4 @@
-name: Compile project
+name: Unit tests
 
 on:
   push:
@@ -8,7 +8,7 @@ on:
 
 jobs:
 
-  build:
+  test:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
@@ -18,5 +18,5 @@ jobs:
       with:
         go-version: '1.24'
 
-    - name: Build
+    - name: Tests
       run: go test -v github.com/iwa/api-FULLCAPS/cmd/api-fullcaps
