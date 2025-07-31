@@ -7,6 +7,44 @@ import (
 	"testing"
 )
 
+func TestRouteRoot(t *testing.T) {
+	tests := []struct {
+		name           string
+		method         string
+		wantStatusCode int
+		wantBody       string
+	}{
+		{
+			name:           "GET should greet",
+			method:         "GET",
+			wantStatusCode: http.StatusOK,
+			wantBody:       "hello :)",
+		},
+		{
+			name:           "DELETE should be sad",
+			method:         "DELETE",
+			wantStatusCode: http.StatusOK,
+			wantBody:       "why delete me? :(",
+		},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			req := httptest.NewRequest(tc.method, "/", nil)
+			rr := httptest.NewRecorder()
+
+			routeRoot(rr, req)
+
+			if rr.Code != tc.wantStatusCode {
+				t.Errorf("expected status %d, got %d", tc.wantStatusCode, rr.Code)
+			}
+			if rr.Body.String() != tc.wantBody {
+				t.Errorf("expected body %q, got %q", tc.wantBody, rr.Body.String())
+			}
+		})
+	}
+}
+
 func TestRouteUppercase(t *testing.T) {
 	tests := []struct {
 		name           string
